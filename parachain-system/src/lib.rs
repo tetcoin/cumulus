@@ -179,11 +179,11 @@ decl_module! {
 			// which means we can put the initialization logic here to remove the
 			// sequencing problem.
 			if let Some((apply_block, validation_function)) = PendingValidationFunction::get() {
-				if vfp.block_number >= apply_block {
+				if vfp.relay_parent_number >= apply_block {
 					PendingValidationFunction::kill();
 					LastUpgrade::put(&apply_block);
 					Self::put_parachain_code(&validation_function);
-					Self::deposit_event(Event::ValidationFunctionApplied(vfp.block_number));
+					Self::deposit_event(Event::ValidationFunctionApplied(vfp.relay_parent_number));
 				}
 			}
 
@@ -592,7 +592,7 @@ impl<T: Config> Module<T> {
 		}
 
 		let relay_blocks_since_last_upgrade = vfp
-			.block_number
+			.relay_parent_number
 			.saturating_sub(LastUpgrade::get());
 
 		if relay_blocks_since_last_upgrade <= cfg.validation_upgrade_frequency {
@@ -600,7 +600,7 @@ impl<T: Config> Module<T> {
 			return None;
 		}
 
-		Some(vfp.block_number + cfg.validation_upgrade_delay)
+		Some(vfp.relay_parent_number + cfg.validation_upgrade_delay)
 	}
 
 	/// The implementation of the runtime upgrade scheduling.
@@ -1120,7 +1120,7 @@ mod tests {
 					let (relay_storage_root, relay_chain_state) =
 						sproof_builder.into_state_root_and_proof();
 					let mut vfp = PersistedValidationData {
-						block_number: *n as RelayChainBlockNumber,
+						relay_parent_number: *n as RelayChainBlockNumber,
 						relay_storage_root,
 						..Default::default()
 					};
