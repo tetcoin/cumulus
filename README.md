@@ -1,7 +1,7 @@
-# Cumulus :cloud:
+# Medley :cloud:
 
-A set of tools for writing [Substrate](https://substrate.dev/)-based
-[Polkadot](https://wiki.polkadot.network/en/)
+A set of tools for writing [Tetcore](https://core.tetcoin.org/)-based
+[Tetcpom](https://tetcoin.org/)
 [parachains](https://wiki.polkadot.network/docs/en/learn-parachains). Refer to the included
 [overview](docs/overview.md) for architectural details, and the
 [Cumulus workshop](https://substrate.dev/cumulus-workshop) for a hand-holding walkthrough
